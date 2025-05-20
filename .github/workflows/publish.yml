@@ -31,4 +31,4 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.CENTRAL_PASSWORD }}
         run: |
-          ./gradlew publish --no-daemon
+          ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon

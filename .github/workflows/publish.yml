@@ -24,11 +24,10 @@ jobs:
         uses: gradle/gradle-build-action@v3
 
       - name: Publish all modules to Maven Central
+        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon --debug --stacktrace
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.CENTRAL_PASSWORD }}
-        run: |
-          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon

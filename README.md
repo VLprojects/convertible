@@ -26,10 +26,14 @@ to generate converters for the targets you use — while remaining fully type-sa
 For Gradle with Kotlin DSL:
 
 ```kotlin
+plugins {
+	id("com.google.devtools.ksp") version "2.1.21-2.0.1"
+}
+
 dependencies { 
-	implementation("pro.vlprojects:convertible-core:0.0.1")
-	implementation("pro.vlprojects:convertible-jpa:0.0.1") // or other scopes
-	ksp("pro.vlprojects:convertible-core:0.0.1")
+	implementation("pro.vlprojects:convertible-core:0.0.2")
+	implementation("pro.vlprojects:convertible-jpa:0.0.2") // or other scopes
+	ksp("pro.vlprojects:convertible-core:0.0.2")
 }
 ```
 
@@ -51,7 +55,7 @@ class User(
 
 3. Auto-generated converter
 ```kotlin
-@Component
+@Component(value = "jpa.UserIdConverter")
 @Converter(autoApply = true)
 class UserIdConverter : AttributeConverter<UserId, String> {
 	override fun convertToDatabaseColumn(attribute: UserId): String = attribute.raw

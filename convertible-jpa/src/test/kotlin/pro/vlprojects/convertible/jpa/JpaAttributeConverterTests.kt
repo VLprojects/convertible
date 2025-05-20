@@ -25,7 +25,7 @@ class JpaAttributeConverterTests {
 	fun `Should succeed to generate JPA converter from resource`(case: TestCase) {
 
 		val originalContent = readResource("vo/${case.originalName}")
-		val expectedContent = readResource("convertor/${case.expectedName}")
+		val expectedContent = readResource("converter/${case.expectedName}")
 
 		val compilation = prepareCompilation(case.originalName, originalContent)
 		val result = compilation.compile()

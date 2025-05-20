@@ -6,11 +6,10 @@ import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.ksp.toTypeName
-import pro.vlprojects.convertible.core.annotation.Scope
 
 data class ConvertibleDefinition(
 	val objectClassName: ClassName,
-	val scope: Scope,
+	val scope: String,
 	val nullable: Boolean,
 	val valueAccessor: ValueAccessor,
 	val factoryAccessor: FactoryAccessor,

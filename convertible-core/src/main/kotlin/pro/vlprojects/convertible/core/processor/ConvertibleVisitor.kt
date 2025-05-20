@@ -5,7 +5,6 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
-import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.TypeName
@@ -14,8 +13,9 @@ import com.squareup.kotlinpoet.ksp.toTypeName
 import pro.vlprojects.convertible.core.annotation.Convertible
 import pro.vlprojects.convertible.core.annotation.ConvertibleFactory
 import pro.vlprojects.convertible.core.annotation.ConvertibleValue
-import pro.vlprojects.convertible.core.annotation.Scope
 import pro.vlprojects.convertible.core.definition.ConvertibleDefinition
+import pro.vlprojects.convertible.core.definition.ConvertibleDefinition.FactoryAccessor
+import pro.vlprojects.convertible.core.definition.ConvertibleDefinition.ValueAccessor
 import kotlin.reflect.KClass
 
 class ConvertibleVisitor(
@@ -55,7 +55,7 @@ class ConvertibleVisitor(
 		}
 	}
 
-	private fun resolveValueAccessor(declaration: KSClassDeclaration, scope: Scope) : ConvertibleDefinition.ValueAccessor {
+	private fun resolveValueAccessor(declaration: KSClassDeclaration, scope: String) : ValueAccessor {
 
 		val className = declaration.simpleName.asString()
 
@@ -81,7 +81,7 @@ class ConvertibleVisitor(
 			check(method.isPublic()) { "Method $className.$methodName must be public" }
 			check(method.parameters.all { it.hasDefault }) { "Method $className.$methodName must have default params only" }
 
-			return ConvertibleDefinition.ValueAccessor.Factory.from(method)
+			return ValueAccessor.Factory.from(method)
 		}
 
 		if (properties.isNotEmpty()) {
@@ -92,7 +92,7 @@ class ConvertibleVisitor(
 			check(property.isPublic()) { "Property $className.$propertyName must be public" }
 			check(!type.isMarkedNullable) { "Type of $className.$propertyName must NOT be nullable" }
 
-			return ConvertibleDefinition.ValueAccessor.Factory.from(property)
+			return ValueAccessor.Factory.from(property)
 		}
 
 		// Fallback: use first public property as ValueAccessor
@@ -101,14 +101,14 @@ class ConvertibleVisitor(
 		check(fallbackProperty != null) { "No public property found in $className to use as fallback ConvertibleValue for scope $scope" }
 		check(!fallbackProperty.type.resolve().isMarkedNullable) { "Fallback property $className.$fallbackProperty must NOT be nullable" }
 
-		return ConvertibleDefinition.ValueAccessor.Factory.from(fallbackProperty)
+		return ValueAccessor.Factory.from(fallbackProperty)
 	}
 
 	private fun resolveFactoryAccessor(
 		declaration: KSClassDeclaration,
 		argumentType: TypeName,
-		scope: Scope,
-	) : ConvertibleDefinition.FactoryAccessor {
+		scope: String,
+	) : FactoryAccessor {
 
 		val className = declaration.simpleName.asString()
 
@@ -133,7 +133,7 @@ class ConvertibleVisitor(
 			check(method.isPublic()) { "Method $className.$methodName is not public" }
 			check(arguments.size == 1) { "Exactly one argument of type $argumentType expected in method $className.$methodName" }
 
-			return ConvertibleDefinition.FactoryAccessor.Factory.from(method)
+			return FactoryAccessor.Factory.from(method)
 		}
 
 		// Fallback: use public constructor as FactoryAccessor
@@ -145,24 +145,17 @@ class ConvertibleVisitor(
 		check(constructor != null) { "No public constructor found in $className" }
 		check(constructorArguments?.size == 1) { "Exactly one argument of type $argumentType expected in constructor $className" }
 
-		return ConvertibleDefinition.FactoryAccessor.Factory.from(constructor)
+		return FactoryAccessor.Factory.from(constructor)
 	}
 
-	private fun KSAnnotated.hasAnnotationWithScope(annotation: KClass<*>, scope: Scope) = annotations
+	private fun KSAnnotated.hasAnnotationWithScope(annotation: KClass<*>, scope: String) = annotations
 		.filter { it.isOf(annotation) }
 		.flatMap { it.getScopes() }
 		.contains(scope)
 
-	private fun KSAnnotation.getScopes(): List<Scope> {
-		val values = getArgument<List<*>>("scopes") ?: return emptyList()
-
-		return values
-			.filterIsInstance<KSDeclaration>()
-			.mapNotNull { type ->
-				val typeName = type.simpleName.asString()
-				Scope.entries.firstOrNull { it.name == typeName }
-			}
-	}
+	private fun KSAnnotation.getScopes() = getArgument<List<*>>("scopes")
+		?.filterIsInstance<String>()
+		?: emptyList()
 
 	private fun KSAnnotation.isOf(annotation: KClass<*>) = shortName.asString() == annotation.simpleName
 

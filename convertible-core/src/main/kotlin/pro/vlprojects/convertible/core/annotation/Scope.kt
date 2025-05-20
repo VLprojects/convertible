@@ -1,13 +1,8 @@
 package pro.vlprojects.convertible.core.annotation
 
-enum class Scope {
-	JPA,
-	MONGODB,
-	JACKSON,
-	MVC,
-	;
-
-	companion object Factory {
-		fun from(name: String) = entries.firstOrNull { it.name.equals(name, ignoreCase = true) }
-	}
+object Scope {
+	const val JPA = "jpa"
+	const val MONGODB = "mongodb"
+	const val JACKSON = "jackson"
+	const val MVC = "mvc"
 }

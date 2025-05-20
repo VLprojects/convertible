@@ -6,7 +6,7 @@ import jakarta.persistence.Converter
 import kotlin.String
 import org.springframework.stereotype.Component
 
-@Component
+@Component(value = "jpa.EnumExampleConverter")
 @Converter(autoApply = true)
 public class EnumExampleConverter : AttributeConverter<EnumExample, String> {
   override fun convertToDatabaseColumn(attribute: EnumExample): String = attribute.getValue()

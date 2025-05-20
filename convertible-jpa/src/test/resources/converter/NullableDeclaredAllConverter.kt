@@ -6,7 +6,7 @@ import jakarta.persistence.Converter
 import kotlin.String
 import org.springframework.stereotype.Component
 
-@Component
+@Component(value = "jpa.NullableDeclaredAllConverter")
 @Converter(autoApply = true)
 public class NullableDeclaredAllConverter : AttributeConverter<NullableDeclaredAll?, String?> {
   override fun convertToDatabaseColumn(attribute: NullableDeclaredAll?): String? = attribute?.value

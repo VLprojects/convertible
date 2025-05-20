@@ -21,7 +21,8 @@ class JpaAttributeConverter : ConvertibleStrategy {
 
 	override fun build(definition: ConvertibleDefinition): FileSpec {
 
-		val packageName = "${definition.objectClassName.packageName}.jpa"
+		val scope = Scope.JPA
+		val packageName = "${definition.objectClassName.packageName}.$scope"
 		val fileName = "${definition.objectClassName.simpleName}Converter"
 		val nullable = definition.nullable
 		val objectType = definition.objectClassName.copy(nullable = nullable)
@@ -33,7 +34,12 @@ class JpaAttributeConverter : ConvertibleStrategy {
 				TypeSpec
 					.classBuilder(fileName)
 					.addModifiers()
-					.addAnnotation(Component::class)
+					.addAnnotation(
+						AnnotationSpec
+							.builder(Component::class)
+							.addMember("value = \"%L\"", "$scope.$fileName")
+							.build()
+					)
 					.addAnnotation(
 						AnnotationSpec
 							.builder(Converter::class)

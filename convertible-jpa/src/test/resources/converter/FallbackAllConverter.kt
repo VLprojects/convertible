@@ -6,7 +6,7 @@ import jakarta.persistence.Converter
 import java.util.UUID
 import org.springframework.stereotype.Component
 
-@Component
+@Component(value = "jpa.FallbackAllConverter")
 @Converter(autoApply = true)
 public class FallbackAllConverter : AttributeConverter<FallbackAll, UUID> {
   override fun convertToDatabaseColumn(attribute: FallbackAll): UUID = attribute.raw

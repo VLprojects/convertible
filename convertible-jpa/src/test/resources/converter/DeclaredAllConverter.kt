@@ -6,7 +6,7 @@ import jakarta.persistence.Converter
 import kotlin.String
 import org.springframework.stereotype.Component
 
-@Component
+@Component(value = "jpa.DeclaredAllConverter")
 @Converter(autoApply = true)
 public class DeclaredAllConverter : AttributeConverter<DeclaredAll, String> {
   override fun convertToDatabaseColumn(attribute: DeclaredAll): String = attribute.value

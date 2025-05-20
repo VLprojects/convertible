@@ -6,7 +6,7 @@ import jakarta.persistence.Converter
 import kotlin.String
 import org.springframework.stereotype.Component
 
-@Component
+@Component(value = "jpa.NullableEnumExampleConverter")
 @Converter(autoApply = true)
 public class NullableEnumExampleConverter : AttributeConverter<NullableEnumExample?, String?> {
   override fun convertToDatabaseColumn(attribute: NullableEnumExample?): String? = attribute?.getValue()

@@ -6,7 +6,7 @@ import jakarta.persistence.Converter
 import kotlin.String
 import org.springframework.stereotype.Component
 
-@Component
+@Component(value = "jpa.NullableFallbackFactoryConverter")
 @Converter(autoApply = true)
 public class NullableFallbackFactoryConverter : AttributeConverter<NullableFallbackFactory?, String?> {
   override fun convertToDatabaseColumn(attribute: NullableFallbackFactory?): String? = attribute?.value

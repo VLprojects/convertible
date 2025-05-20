@@ -12,7 +12,6 @@ import com.squareup.kotlinpoet.FileSpec
 import pro.vlprojects.convertible.core.annotation.Convertible
 import pro.vlprojects.convertible.core.definition.ConvertibleDefinition
 import pro.vlprojects.convertible.core.strategy.ConvertibleStrategy
-import pro.vlprojects.convertible.core.processor.ConvertibleVisitor
 import java.io.OutputStreamWriter
 import java.util.ServiceLoader
 
@@ -40,7 +39,7 @@ class ConvertibleProcessor(
 
 	override fun finish() = definitions
 		.forEach { definition ->
-			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.name.lowercase()}"
+			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.lowercase()}"
 			strategies
 				.filter { it.supports(definition) }
 				.forEach { strategy ->

@@ -4,6 +4,6 @@ package pro.vlprojects.convertible.core.annotation
 @Retention(AnnotationRetention.BINARY)
 @Repeatable
 annotation class Convertible(
-	val scopes: Array<Scope> = [],
+	val scopes: Array<String> = [],
 	val nullable: Boolean = false,
 )

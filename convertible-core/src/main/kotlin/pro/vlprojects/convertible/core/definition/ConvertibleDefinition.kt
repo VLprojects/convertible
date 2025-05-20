@@ -1,6 +1,7 @@
 package pro.vlprojects.convertible.core.definition
 
 import com.google.devtools.ksp.isConstructor
+import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ClassName
@@ -9,6 +10,7 @@ import com.squareup.kotlinpoet.ksp.toTypeName
 
 data class ConvertibleDefinition(
 	val objectClassName: ClassName,
+	val source: KSFile,
 	val scope: String,
 	val nullable: Boolean,
 	val valueAccessor: ValueAccessor,

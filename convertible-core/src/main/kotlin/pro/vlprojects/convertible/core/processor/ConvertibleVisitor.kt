@@ -44,6 +44,7 @@ class ConvertibleVisitor(
 
 				val definition = ConvertibleDefinition(
 					objectClassName = className,
+					source = classDeclaration.containingFile.let(::checkNotNull),
 					scope = scope,
 					nullable = nullable,
 					valueAccessor = valueAccessor,

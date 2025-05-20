@@ -7,6 +7,7 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.FileSpec
 import pro.vlprojects.convertible.core.annotation.Convertible
@@ -44,8 +45,8 @@ class ConvertibleProcessor(
 				.filter { it.supports(definition) }
 				.forEach { strategy ->
 					val specification = strategy.build(definition)
-					specification.writeWith(generator, targetPackage)
-
+					logger.info("Generating file: $targetPackage.${specification.name}")
+					specification.writeWith(generator, targetPackage, definition.source)
 					logger.info("Generated file: $targetPackage.${specification.name}")
 				}
 		}
@@ -55,8 +56,8 @@ class ConvertibleProcessor(
 		logger.error("Failed to process @Convertible")
 	}
 
-	private fun FileSpec.writeWith(generator: CodeGenerator, targetPackage: String) = generator
-		.createNewFile(Dependencies(false), targetPackage, name)
+	private fun FileSpec.writeWith(generator: CodeGenerator, targetPackage: String, source: KSFile) = generator
+		.createNewFile(Dependencies(false, source), targetPackage, name)
 		.use { stream ->
 			OutputStreamWriter(stream)
 				.use { writer -> writeTo(writer) }

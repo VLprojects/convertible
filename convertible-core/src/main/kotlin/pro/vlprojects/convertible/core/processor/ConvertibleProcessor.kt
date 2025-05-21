@@ -12,19 +12,17 @@ import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.FileSpec
 import pro.vlprojects.convertible.core.annotation.Convertible
 import pro.vlprojects.convertible.core.definition.ConvertibleDefinition
-import pro.vlprojects.convertible.core.strategy.ConvertibleStrategy
+import pro.vlprojects.convertible.core.strategy.ConvertibleStrategyLoader
 import java.io.OutputStreamWriter
-import java.util.ServiceLoader
 
 class ConvertibleProcessor(
 	private val generator: CodeGenerator,
 	private val logger: KSPLogger,
 ) : SymbolProcessor {
 
-	private val strategies = ServiceLoader
-		.load(ConvertibleStrategy::class.java)
-		.toList()
-		.onEach { strategy -> logger.info("Loaded strategy: ${strategy.javaClass.canonicalName}") }
+	private val strategies = ConvertibleStrategyLoader(logger)
+		.load()
+		.also { logger.info("${it.size} strategies found for code generating") }
 
 	private val definitions = mutableListOf<ConvertibleDefinition>()
 	private val visitor = ConvertibleVisitor(definitions)

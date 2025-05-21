@@ -54,33 +54,53 @@ class JpaAttributeConverter : ConvertibleStrategy {
 	private fun buildToDatabaseColumn(definition: ConvertibleDefinition): FunSpec {
 
 		val nullable = definition.nullable
-		val safeAccess = if (definition.nullable) "?." else "."
-		val invocation = if (definition.valueAccessor.isMethod) "()" else ""
-		val expression = "attribute$safeAccess${definition.valueAccessor.name}$invocation"
 
 		return FunSpec
 			.builder("convertToDatabaseColumn")
 			.addModifiers(KModifier.OVERRIDE)
 			.addParameter("attribute", definition.objectClassName.copy(nullable))
 			.returns(definition.valueAccessor.returnType.copy(nullable))
-			.addCode(CodeBlock.of("return %L", expression))
+			.addCode(
+				CodeBlock
+					.builder()
+					.add("return attribute")
+					.apply { if (nullable) add("?") }
+					.add(".")
+					.add(definition.valueAccessor.name)
+					.apply { if (definition.valueAccessor.isMethod) add("()") }
+					.build()
+			)
 			.build()
 	}
 
 	private fun buildToEntityAttribute(definition: ConvertibleDefinition): FunSpec {
+
 		val nullable = definition.nullable
-		val safeAccess = if (definition.nullable) "?." else "."
-		val isConstructor = definition.factoryAccessor.isConstructor
-		val method = definition.objectClassName.simpleNames.joinToString(".")
-		val factoryCall = if (isConstructor) "::$method" else "$method::${definition.factoryAccessor.name}"
-		val expression = "source${safeAccess}let($factoryCall)"
+		val className = definition.objectClassName
+		val accessor = definition.factoryAccessor
+
+		val factoryReference = when {
+			accessor.isConstructor && className.enclosingClassName() != null -> CodeBlock.of("%T::%L", className.topLevelClassName(), className.simpleName)
+			accessor.isConstructor -> CodeBlock.of("::%L", className.simpleName)
+			className.enclosingClassName() != null -> CodeBlock.of("%T::%L", className, accessor.name)
+			else -> CodeBlock.of("%T::%L", className.topLevelClassName(), accessor.name)
+		}
 
 		return FunSpec
 			.builder("convertToEntityAttribute")
 			.addModifiers(KModifier.OVERRIDE)
 			.addParameter("source", definition.valueAccessor.returnType.copy(nullable))
 			.returns(definition.objectClassName.copy(nullable))
-			.addCode(CodeBlock.of("return %L", expression))
+			.addCode(
+				CodeBlock
+					.builder()
+					.add("return source")
+					.apply { if (nullable) add("?") }
+					.add(".let(")
+					.add(factoryReference)
+					.add(")")
+					.build()
+			)
 			.build()
 	}
 }

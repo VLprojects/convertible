@@ -5,18 +5,18 @@ import pro.vlprojects.convertible.core.annotation.ConvertibleFactory
 import pro.vlprojects.convertible.core.annotation.ConvertibleValue
 import pro.vlprojects.convertible.core.annotation.Scope
 
-data class Base(
-	val nested: Nested,
+data class NestedDeclaredAll(
+	val nested: SubNestedDeclaredAll,
 ) {
 	@Convertible(scopes = [Scope.JPA])
-	data class Nested(val raw: String) {
+	data class SubNestedDeclaredAll(val raw: String) {
 
 		@ConvertibleValue(scopes = [Scope.JPA])
 		val value = raw
 
 		companion object Factory {
 			@ConvertibleFactory(scopes = [Scope.JPA])
-			fun from(input: String) = Nested(input)
+			fun from(input: String) = SubNestedDeclaredAll(input)
 		}
 	}
 }

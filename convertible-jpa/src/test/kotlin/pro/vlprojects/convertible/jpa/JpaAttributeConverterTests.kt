@@ -131,7 +131,13 @@ class JpaAttributeConverterTests {
 			Arguments.of(
 				Named.of(
 					"Nested. Factory declared. Value declared",
-					TestCase("Base.kt", "NestedJpaConverter.kt"),
+					TestCase("NestedDeclaredAll.kt", "SubNestedDeclaredAllJpaConverter.kt"),
+				)
+			),
+			Arguments.of(
+				Named.of(
+					"Nested. Fallback factory. Fallback value",
+					TestCase("NestedFallbackAll.kt", "SubNestedFallbackAllJpaConverter.kt"),
 				)
 			),
 		)

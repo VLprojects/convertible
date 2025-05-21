@@ -65,61 +65,61 @@ class JpaAttributeConverterTests {
 			Arguments.of(
 				Named.of(
 					"Fallback value. Fallback factory",
-					TestCase("FallbackAll.kt", "FallbackAllConverter.kt"),
+					TestCase("FallbackAll.kt", "FallbackAllJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Nullable. Fallback value. Fallback factory",
-					TestCase("NullableFallbackAll.kt", "NullableFallbackAllConverter.kt"),
+					TestCase("NullableFallbackAll.kt", "NullableFallbackAllJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Fallback value. Factory declared",
-					TestCase("FallbackValue.kt", "FallbackValueConverter.kt"),
+					TestCase("FallbackValue.kt", "FallbackValueJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Nullable. Fallback value. Factory declared",
-					TestCase("NullableFallbackValue.kt", "NullableFallbackValueConverter.kt"),
+					TestCase("NullableFallbackValue.kt", "NullableFallbackValueJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Fallback factory. Value declared",
-					TestCase("FallbackFactory.kt", "FallbackFactoryConverter.kt"),
+					TestCase("FallbackFactory.kt", "FallbackFactoryJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Nullable. Fallback factory. Value declared",
-					TestCase("NullableFallbackFactory.kt", "NullableFallbackFactoryConverter.kt"),
+					TestCase("NullableFallbackFactory.kt", "NullableFallbackFactoryJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Factory declared. Value declared",
-					TestCase("DeclaredAll.kt", "DeclaredAllConverter.kt"),
+					TestCase("DeclaredAll.kt", "DeclaredAllJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Nullable. Factory declared. Value declared",
-					TestCase("NullableDeclaredAll.kt", "NullableDeclaredAllConverter.kt"),
+					TestCase("NullableDeclaredAll.kt", "NullableDeclaredAllJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Enum. Factory declared. Value declared via method",
-					TestCase("EnumExample.kt", "EnumExampleConverter.kt"),
+					TestCase("EnumExample.kt", "EnumExampleJpaConverter.kt"),
 				)
 			),
 			Arguments.of(
 				Named.of(
 					"Nullable. Enum. Factory declared. Value declared via method",
-					TestCase("NullableEnumExample.kt", "NullableEnumExampleConverter.kt"),
+					TestCase("NullableEnumExample.kt", "NullableEnumExampleJpaConverter.kt"),
 				)
 			),
 		)

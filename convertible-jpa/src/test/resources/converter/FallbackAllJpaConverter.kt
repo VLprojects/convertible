@@ -1,14 +1,13 @@
-package com.example.vo.jpa
+package com.example.vo
 
-import com.example.vo.FallbackAll
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 import java.util.UUID
 import org.springframework.stereotype.Component
 
-@Component(value = "jpa.FallbackAllConverter")
+@Component
 @Converter(autoApply = true)
-public class FallbackAllConverter : AttributeConverter<FallbackAll, UUID> {
+public class FallbackAllJpaConverter : AttributeConverter<FallbackAll, UUID> {
   override fun convertToDatabaseColumn(attribute: FallbackAll): UUID = attribute.raw
 
   override fun convertToEntityAttribute(source: UUID): FallbackAll = source.let(::FallbackAll)

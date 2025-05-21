@@ -31,9 +31,9 @@ plugins {
 }
 
 dependencies { 
-	implementation("pro.vlprojects:convertible-core:0.0.2")
-	implementation("pro.vlprojects:convertible-jpa:0.0.2") // or other scopes
-	ksp("pro.vlprojects:convertible-core:0.0.2")
+	implementation("pro.vlprojects:convertible-core:0.1.0")
+	implementation("pro.vlprojects:convertible-jpa:0.1.0") // or other scopes
+	ksp("pro.vlprojects:convertible-jpa:0.1.0")
 }
 ```
 

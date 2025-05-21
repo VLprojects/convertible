@@ -1,14 +1,13 @@
-package com.example.vo.jpa
+package com.example.vo
 
-import com.example.vo.NullableDeclaredAll
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 import kotlin.String
 import org.springframework.stereotype.Component
 
-@Component(value = "jpa.NullableDeclaredAllConverter")
+@Component
 @Converter(autoApply = true)
-public class NullableDeclaredAllConverter : AttributeConverter<NullableDeclaredAll?, String?> {
+public class NullableDeclaredAllJpaConverter : AttributeConverter<NullableDeclaredAll?, String?> {
   override fun convertToDatabaseColumn(attribute: NullableDeclaredAll?): String? = attribute?.value
 
   override fun convertToEntityAttribute(source: String?): NullableDeclaredAll? = source?.let(NullableDeclaredAll::from)

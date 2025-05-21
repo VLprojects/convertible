@@ -41,12 +41,11 @@ class ConvertibleProcessor(
 	override fun finish() = definitions
 		.also { logger.info("${it.size} definitions found for code generating") }
 		.forEach { definition ->
-			logger.info("Processing definition: $definition")
-			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.lowercase()}"
-
 			check(strategy.supports(definition)) { "The strategy does not support the definition: $definition" }
 
+			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.lowercase()}"
 			val specification = strategy.build(definition)
+
 			specification.writeWith(generator, targetPackage, definition.source)
 			logger.info("Generated file: $targetPackage.${specification.name}")
 		}

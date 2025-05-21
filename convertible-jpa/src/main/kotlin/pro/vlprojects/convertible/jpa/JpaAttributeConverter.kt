@@ -17,7 +17,7 @@ import pro.vlprojects.convertible.core.strategy.ConvertibleStrategy
 
 class JpaAttributeConverter : ConvertibleStrategy {
 
-	override fun supports(definition: ConvertibleDefinition): Boolean = definition.scope == Scope.JPA
+	override fun scope() = Scope.JPA
 
 	override fun build(definition: ConvertibleDefinition): FileSpec {
 

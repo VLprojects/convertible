@@ -12,22 +12,20 @@ import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.FileSpec
 import pro.vlprojects.convertible.core.annotation.Convertible
 import pro.vlprojects.convertible.core.definition.ConvertibleDefinition
-import pro.vlprojects.convertible.core.strategy.ConvertibleStrategyLoader
+import pro.vlprojects.convertible.core.strategy.ConvertibleStrategy
 import java.io.OutputStreamWriter
 
 class ConvertibleProcessor(
+	private val strategy: ConvertibleStrategy,
 	private val generator: CodeGenerator,
 	private val logger: KSPLogger,
 ) : SymbolProcessor {
 
-	private val strategies = ConvertibleStrategyLoader(logger)
-		.load()
-		.also { logger.info("${it.size} strategies found for code generating") }
-
 	private val definitions = mutableListOf<ConvertibleDefinition>()
-	private val visitor = ConvertibleVisitor(definitions)
 
 	override fun process(resolver: Resolver): List<KSAnnotated> {
+		val visitor = ConvertibleVisitor(strategy.scope(), definitions)
+
 		resolver
 			.getSymbolsWithAnnotation(Convertible::class.qualifiedName!!)
 			.filterIsInstance<KSClassDeclaration>()
@@ -45,15 +43,14 @@ class ConvertibleProcessor(
 		.forEach { definition ->
 			logger.info("Processing definition: $definition")
 			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.lowercase()}"
-			strategies
-				.filter { it.supports(definition) }
-				.forEach { strategy ->
-					val specification = strategy.build(definition)
-					logger.info("Generating file: $targetPackage.${specification.name}")
-					specification.writeWith(generator, targetPackage, definition.source)
-					logger.info("Generated file: $targetPackage.${specification.name}")
-				}
+
+			check(strategy.supports(definition)) { "The strategy does not support the definition: $definition" }
+
+			val specification = strategy.build(definition)
+			specification.writeWith(generator, targetPackage, definition.source)
+			logger.info("Generated file: $targetPackage.${specification.name}")
 		}
+
 
 	override fun onError() {
 		super.onError()

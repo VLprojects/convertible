@@ -19,6 +19,7 @@ import pro.vlprojects.convertible.core.definition.ConvertibleDefinition.ValueAcc
 import kotlin.reflect.KClass
 
 class ConvertibleVisitor(
+	private val scope: String,
 	private val definitions: MutableList<ConvertibleDefinition>,
 ) : KSVisitorVoid() {
 
@@ -36,23 +37,21 @@ class ConvertibleVisitor(
 			val nullable = annotation.getArgument<Boolean>("nullable").let(::checkNotNull)
 			val scopes = annotation.getScopes()
 
-			check(scopes.isNotEmpty()) { "At least one scope must be specified for @Convertible in $className" }
+			check(scopes.contains(scope)) { "Scope $scope not specified in @Convertible annotation for class $className" }
 
-			scopes.forEach { scope ->
-				val valueAccessor = resolveValueAccessor(classDeclaration, scope)
-				val factoryAccessor = resolveFactoryAccessor(classDeclaration, valueAccessor.returnType, scope)
+			val valueAccessor = resolveValueAccessor(classDeclaration, scope)
+			val factoryAccessor = resolveFactoryAccessor(classDeclaration, valueAccessor.returnType, scope)
 
-				val definition = ConvertibleDefinition(
-					objectClassName = className,
-					source = classDeclaration.containingFile.let(::checkNotNull),
-					scope = scope,
-					nullable = nullable,
-					valueAccessor = valueAccessor,
-					factoryAccessor = factoryAccessor,
-				)
+			val definition = ConvertibleDefinition(
+				objectClassName = className,
+				source = classDeclaration.containingFile.let(::checkNotNull),
+				scope = scope,
+				nullable = nullable,
+				valueAccessor = valueAccessor,
+				factoryAccessor = factoryAccessor,
+			)
 
-				definitions.add(definition)
-			}
+			definitions.add(definition)
 		}
 	}
 

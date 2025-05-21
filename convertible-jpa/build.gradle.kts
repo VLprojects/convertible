@@ -12,10 +12,11 @@ repositories {
 dependencies {
 	implementation(project(":convertible-core"))
 
+	implementation("com.google.devtools.ksp:symbol-processing-api:2.1.21-2.0.1")
+	implementation("com.squareup:kotlinpoet:2.2.0")
+
 	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
 	implementation("org.springframework:spring-context:6.2.6")
-
-	implementation("com.squareup:kotlinpoet:2.2.0")
 
 	testImplementation(kotlin("test"))
 

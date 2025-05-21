@@ -4,6 +4,7 @@ import com.squareup.kotlinpoet.FileSpec
 import pro.vlprojects.convertible.core.definition.ConvertibleDefinition
 
 interface ConvertibleStrategy {
-	fun supports(definition: ConvertibleDefinition): Boolean
+	fun scope(): String
+	fun supports(definition: ConvertibleDefinition): Boolean = scope() == definition.scope
 	fun build(definition: ConvertibleDefinition): FileSpec
 }

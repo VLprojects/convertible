@@ -12,7 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
-import pro.vlprojects.convertible.core.processor.ConvertibleProcessorProvider
 import java.io.File
 import java.util.stream.Stream
 import kotlin.test.assertEquals
@@ -40,7 +39,7 @@ class JpaAttributeConverterTests {
 			configureKsp(useKsp2 = true) {
 				workingDir = File("build/ksp-test")
 				sources = listOf(SourceFile.kotlin(originalName, originalContent))
-				symbolProcessorProviders += ConvertibleProcessorProvider()
+				symbolProcessorProviders += JpaConvertibleProcessorProvider()
 				inheritClassPath = true
 				verbose = false
 				messageOutputStream = System.out

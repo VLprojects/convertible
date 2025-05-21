@@ -6,4 +6,5 @@ package pro.vlprojects.convertible.core.annotation
 annotation class Convertible(
 	val scopes: Array<String> = [],
 	val nullable: Boolean = false,
+	val prefix: String = "",
 )

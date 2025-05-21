@@ -47,6 +47,7 @@ class ConvertibleVisitor(
 				source = classDeclaration.containingFile.let(::checkNotNull),
 				scope = scope,
 				nullable = nullable,
+				prefix = annotation.getArgument<String>("prefix") ?: "",
 				valueAccessor = valueAccessor,
 				factoryAccessor = factoryAccessor,
 			)

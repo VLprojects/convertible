@@ -21,7 +21,7 @@ class JpaAttributeConverter : ConvertibleStrategy {
 
 	override fun build(definition: ConvertibleDefinition): FileSpec {
 
-		val fileName = "${definition.objectClassName.simpleName}JpaConverter"
+		val fileName = "${definition.prefix}${definition.objectClassName.simpleName}JpaConverter"
 		val nullable = definition.nullable
 		val objectType = definition.objectClassName.copy(nullable = nullable)
 		val primitiveType = definition.valueAccessor.returnType.copy(nullable = nullable)

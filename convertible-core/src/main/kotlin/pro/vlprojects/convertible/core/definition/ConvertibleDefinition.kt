@@ -13,6 +13,7 @@ data class ConvertibleDefinition(
 	val source: KSFile,
 	val scope: String,
 	val nullable: Boolean,
+	val prefix: String,
 	val valueAccessor: ValueAccessor,
 	val factoryAccessor: FactoryAccessor,
 ) {

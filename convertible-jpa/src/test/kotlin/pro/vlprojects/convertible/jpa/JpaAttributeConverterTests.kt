@@ -122,6 +122,12 @@ class JpaAttributeConverterTests {
 					TestCase("NullableEnumExample.kt", "NullableEnumExampleJpaConverter.kt"),
 				)
 			),
+			Arguments.of(
+				Named.of(
+					"Prefix. Factory declared. Value declared",
+					TestCase("Prefix.kt", "SomePrefixJpaConverter.kt"),
+				)
+			),
 		)
 	}
 

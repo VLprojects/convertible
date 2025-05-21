@@ -21,7 +21,11 @@ class ConvertibleProcessor(
 	private val logger: KSPLogger,
 ) : SymbolProcessor {
 
-	private val strategies = ServiceLoader.load(ConvertibleStrategy::class.java).toList()
+	private val strategies = ServiceLoader
+		.load(ConvertibleStrategy::class.java)
+		.toList()
+		.onEach { strategy -> logger.info("Loaded strategy: ${strategy.javaClass.canonicalName}") }
+
 	private val definitions = mutableListOf<ConvertibleDefinition>()
 	private val visitor = ConvertibleVisitor(definitions)
 
@@ -41,6 +45,7 @@ class ConvertibleProcessor(
 	override fun finish() = definitions
 		.also { logger.info("${it.size} definitions found for code generating") }
 		.forEach { definition ->
+			logger.info("Processing definition: $definition")
 			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.lowercase()}"
 			strategies
 				.filter { it.supports(definition) }

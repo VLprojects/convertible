@@ -30,7 +30,7 @@ class ConvertibleVisitor(
 			.filter { it.isOf(Convertible::class) }
 			.toList()
 
-		if (convertibles.isEmpty()) return
+		check(convertibles.isNotEmpty()) { "No @Convertible annotations on class $className" }
 
 		convertibles.forEach { annotation ->
 			val nullable = annotation.getArgument<Boolean>("nullable").let(::checkNotNull)

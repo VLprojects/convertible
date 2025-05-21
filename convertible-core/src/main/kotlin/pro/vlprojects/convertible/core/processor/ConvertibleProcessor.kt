@@ -39,6 +39,7 @@ class ConvertibleProcessor(
 	}
 
 	override fun finish() = definitions
+		.also { logger.info("${it.size} definitions found for code generating") }
 		.forEach { definition ->
 			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.lowercase()}"
 			strategies

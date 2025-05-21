@@ -71,7 +71,8 @@ class JpaAttributeConverter : ConvertibleStrategy {
 		val nullable = definition.nullable
 		val safeAccess = if (definition.nullable) "?." else "."
 		val isConstructor = definition.factoryAccessor.isConstructor
-		val factoryCall = if (isConstructor) "::${definition.objectClassName.simpleName}" else "${definition.objectClassName.simpleName}::${definition.factoryAccessor.name}"
+		val method = definition.objectClassName.simpleNames.joinToString(".")
+		val factoryCall = if (isConstructor) "::$method" else "$method::${definition.factoryAccessor.name}"
 		val expression = "source${safeAccess}let($factoryCall)"
 
 		return FunSpec

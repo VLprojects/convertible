@@ -128,6 +128,12 @@ class JpaAttributeConverterTests {
 					TestCase("Prefix.kt", "SomePrefixJpaConverter.kt"),
 				)
 			),
+			Arguments.of(
+				Named.of(
+					"Nested. Factory declared. Value declared",
+					TestCase("Base.kt", "NestedJpaConverter.kt"),
+				)
+			),
 		)
 	}
 

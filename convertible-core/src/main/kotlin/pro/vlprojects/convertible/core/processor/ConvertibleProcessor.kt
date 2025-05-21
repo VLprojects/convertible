@@ -43,7 +43,7 @@ class ConvertibleProcessor(
 		.forEach { definition ->
 			check(strategy.supports(definition)) { "The strategy does not support the definition: $definition" }
 
-			val targetPackage = "${definition.objectClassName.packageName}.${definition.scope.lowercase()}"
+			val targetPackage = definition.objectClassName.packageName
 			val specification = strategy.build(definition)
 
 			specification.writeWith(generator, targetPackage, definition.source)
